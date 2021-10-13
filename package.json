@@ -1,0 +1,16 @@
+{
+  "name": "jigsawlutioner-controller-scanner",
+  "version": "1.0.0",
+  "description": "Scanner station, that can make images of the pieces",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byWulf/jigsawlutioner-controller-scanner.git"
+  },
+  "author": "byWulf",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "jigsawlutioner-controller": "^2.0"
+  }
+}
