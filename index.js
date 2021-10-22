@@ -1,5 +1,5 @@
-import Controller from 'jigsawlutioner-controller/Controller.js';
-import camera from '../camera.js';
+import Controller from 'jigsawlutioner-controller';
+import camera from './camera.js';
 import sharp from 'sharp';
 
 const controller = new Controller(3000);
