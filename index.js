@@ -9,6 +9,10 @@ controller.createEndpoint('take-photo', async (parameters, resolve) => {
 
     const image = sharp(photo);
 
+    if (parameters.rotation) {
+        image.rotate(parseInt(parameters.rotation, 10));
+    }
+
     const metadata = await image.metadata();
 
     let left = Math.floor((parameters.left || 0) / 100 * metadata.width);
