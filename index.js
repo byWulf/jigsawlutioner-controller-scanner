@@ -12,5 +12,12 @@ controller.createEndpoint('take-photo', async (parameters, resolve) => {
 
     const photo = await camera.takeImage(parameters.left || null, parameters.right || null, parameters.top || null, parameters.bottom || null, parameters.width || null);
 
+    if (parameters.light.positionAfter !== undefined) {
+        if (['top', 'bottom'].indexOf(parameters.light.positionAfter) === -1) {
+            throw new Error('Parameter "light[positionAfter]" was not one of "top", "bottom".');
+        }
+        pin.writeSync(parameters.light.positionAfter === 'top' ? 0 : 1);
+    }
+
     resolve(photo, 'image/jpeg');
 });
