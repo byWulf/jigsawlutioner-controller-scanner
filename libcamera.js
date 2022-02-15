@@ -12,17 +12,17 @@ export default new class Libcamera {
     parameters = [
         '-t', '0', // Time (in ms) for which program runs
         '-s', // Perform capture when signal received
-        '--shutter', '20000', // Set a fixed shutter speed
+        '--shutter', '10000', // Set a fixed shutter speed
         '-o', '-', // Set the output file name
         '--gain', '0', // Set a fixed gain value
         '--sharpness', '1',
         '--contrast', '1',
         '--brightness', '0',
-        '--saturation', '0.5',
-        '--awb', 'fluorescent',
+        '--saturation', '2',
+        '--awb', 'indoor',
         '--denoise', 'off',
         '--thumb', 'none',
-        '-q', '50', // Jpg quality
+        '-q', '80', // Jpg quality
         '-n', // Do not show a preview window
         '-e', 'jpg', // Encoding
     ];
