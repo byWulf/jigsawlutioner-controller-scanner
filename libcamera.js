@@ -27,6 +27,15 @@ export default new class Libcamera {
         '-e', 'jpg', // Encoding
     ];
 
+    // jpg
+    startBytes = Buffer.from([0xff, 0xd8]);
+    endBytes = Buffer.from([0xff, 0xd9]);
+
+    // png
+    // startBytes = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+    // endBytes = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82]);
+
+
     /**
      * @return {Promise<void>}
      */
@@ -81,19 +90,19 @@ export default new class Libcamera {
         }
 
         let openings = 1;
-        let currentPosition = 2;
+        let currentPosition = this.startBytes.length;
         do {
-            let nextStart = this.buffer.indexOf(Buffer.from([0xff, 0xd8]), currentPosition);
-            let nextEnd = this.buffer.indexOf(Buffer.from([0xff, 0xd9]), currentPosition);
+            let nextStart = this.buffer.indexOf(this.startBytes, currentPosition);
+            let nextEnd = this.buffer.indexOf(this.endBytes, currentPosition);
 
             if (nextEnd === -1) {
                 return;
             }
             if (nextStart === -1 || nextEnd < nextStart) {
-                currentPosition = nextEnd + 2;
+                currentPosition = nextEnd + this.endBytes.length;
                 openings--;
             } else {
-                currentPosition = nextStart + 2;
+                currentPosition = nextStart + this.startBytes.length;
                 openings++;
             }
         } while (openings > 0);
