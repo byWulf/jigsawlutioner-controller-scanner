@@ -3,6 +3,7 @@ import childProcess from 'child_process';
 export default new class Libcamera {
     isInitialized = false;
     currentCameraResolver = null;
+    readyCallback = null;
     cameraProcess = null;
     buffer = null;
     startTime = 0;
@@ -67,6 +68,11 @@ export default new class Libcamera {
 
             this.cameraProcess.stderr.on('data', (data) => {
                 console.error(data.toString());
+
+                if (data.toString().indexOf('Still capture image received') > -1 && this.readyCallback !== null) {
+                    this.readyCallback();
+                    this.readyCallback = null;
+                }
             });
             this.cameraProcess.on('close', () => {
                 console.log('Camera closed!');
@@ -124,7 +130,7 @@ export default new class Libcamera {
     /**
      * @return {Promise<Buffer>}
      */
-    takeImage(left, right, top, bottom, width) {
+    takeImage(left, right, top, bottom, width, readyCallback) {
         return new Promise(async (resolve) => {
             if (this.isInitialized && this.currentParameters !== left + '_' + right + '_' + top + '_' + bottom + '_' + width) {
                 this.cameraProcess.kill('SIGINT');
@@ -138,6 +144,7 @@ export default new class Libcamera {
 
             this.startTime = Date.now();
             this.currentCameraResolver = resolve;
+            this.readyCallback = readyCallback;
             this.cameraProcess.kill('SIGUSR1');
         });
     };
