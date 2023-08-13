@@ -69,7 +69,7 @@ export default new class Libcamera {
             this.cameraProcess.stderr.on('data', (data) => {
                 console.error(data.toString());
 
-                if (data.toString().indexOf('Still capture image received') > -1 && this.readyCallback !== null) {
+                if (data.toString().indexOf('Still capture image received') > -1 && typeof this.readyCallback === 'function') {
                     this.readyCallback();
                     this.readyCallback = null;
                 }
